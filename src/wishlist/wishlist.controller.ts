@@ -11,6 +11,7 @@ import { WishlistService } from './wishlist.service';
 import { CreateWishlistDto } from './dto/create-wishlist.dto';
 import { UpdateWishlistDto } from './dto/update-wishlist.dto';
 import { UpdateBoughtByDto } from './dto/update-bought-by.dto';
+import { UpdateWishlistInfoDto } from './dto/update-wishlist-info.dto';
 
 @Controller('wishlist')
 export class WishlistController {
@@ -51,5 +52,14 @@ export class WishlistController {
     @Param('itemId') itemId: string,
   ) {
     return this.wishlistService.removeWishListItem(wishlistId, itemId);
+  }
+
+  // Обновление основных данных wishlist
+  @Patch(':id/info')
+  updateInfo(
+    @Param('id') id: string,
+    @Body() dto: UpdateWishlistInfoDto,
+  ) {
+    return this.wishlistService.updateInfo(id, dto);
   }
 }

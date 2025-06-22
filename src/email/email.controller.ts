@@ -11,6 +11,6 @@ export class EmailController {
     @Body('shareLink') shareLink: string,
   ) {
     await this.emailService.sendEmail(to, shareLink);
-    return { message: 'Email sent successfully!' };
+    return { success: true, message: 'Email sent successfully!' };
   }
 }

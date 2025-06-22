@@ -236,4 +236,36 @@ export class WishlistService {
 
     return { success: true };
   }
+
+  /**
+   * Обновление основных данных wishlist (название, возраст, interests и т.д.)
+   */
+  async updateInfo(id: string, dto: Partial<{
+    name: string;
+    age: number;
+    gender: string;
+    interests: string;
+    maxPrice: number;
+    aiSupport: boolean;
+  }>): Promise<{ success: true }> {
+    if (!id) throw new Error('Wishlist ID is required');
+
+    // Формируем payload только из переданных полей, чтобы не затирать undefined -> null
+    const updatePayload: Record<string, unknown> = {};
+    if (dto.name !== undefined) updatePayload.name = dto.name;
+    if (dto.age !== undefined) updatePayload.age = dto.age;
+    if (dto.gender !== undefined) updatePayload.gender = dto.gender;
+    if (dto.interests !== undefined) updatePayload.interests = dto.interests;
+    if (dto.maxPrice !== undefined) updatePayload.max_price = dto.maxPrice;
+    if (dto.aiSupport !== undefined) updatePayload.ai_support = dto.aiSupport;
+
+    const { error } = await this.supabase
+      .from('wishlists')
+      .update(updatePayload)
+      .eq('id', id);
+
+    if (error) throw new Error(`Failed to update wishlist info: ${error.message}`);
+
+    return { success: true };
+  }
 }

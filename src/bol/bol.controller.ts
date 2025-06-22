@@ -13,4 +13,8 @@ export class BolController {
   getByUrl(@Body('url') url: string, @Body('wishlistId') wishlistId: string) {
     return this.bolService.getProductByUrlAndAddToWishlist(url, wishlistId);
   }
+  @Get('preview-by-url')
+  async previewByUrl(@Query('url') url: string) {
+    return this.bolService.getProductByUrl(url);
+  }
 }

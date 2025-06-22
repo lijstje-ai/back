@@ -111,7 +111,7 @@ export class BolService {
         params: {
           'search-term': query,
           'country-code': 'NL',
-          'page-size': 5,
+          'page-size': 10,
           'include-image': true,
           'include-offer': true,
         },
@@ -190,6 +190,11 @@ export class BolService {
 
         if (filtered.length > 0) {
           results.push(filtered[0]);
+        }
+        
+        // Stop if we already have 10 results
+        if (results.length >= 10) {
+          break;
         }
       } catch (err) {
         console.warn(`❌ Bol.com search failed for "${query}"`, err);
