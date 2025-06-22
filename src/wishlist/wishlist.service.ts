@@ -266,6 +266,59 @@ export class WishlistService {
 
     if (error) throw new Error(`Failed to update wishlist info: ${error.message}`);
 
+    // Refresh recommendations if AI support is enabled
+    const { data: updatedWishlistData, error: updatedWishlistError } = await this.supabase
+      .from('wishlists')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (updatedWishlistError) {
+      console.warn('Failed to fetch updated wishlist:', updatedWishlistError.message);
+      return { success: true };
+    }
+
+    const updatedWishlist = updatedWishlistData as Wishlist;
+
+    if (updatedWishlist.ai_support) {
+      try {
+        const recommendations = await this.openAiService.generateProductRecommendations({
+          name: updatedWishlist.name,
+          age: updatedWishlist.age,
+          gender: updatedWishlist.gender,
+          interests: updatedWishlist.interests,
+          maxPrice: updatedWishlist.max_price,
+          aiSupport: updatedWishlist.ai_support,
+        });
+
+        // Delete old recommendations
+        await this.supabase
+          .from('recommendations')
+          .delete()
+          .eq('wishlist_id', id);
+
+        if (recommendations.length > 0) {
+          const insertPayload = recommendations.map((rec) => ({
+            title: rec.title,
+            image: rec.image,
+            link: rec.link,
+            price: rec.price,
+            wishlist_id: id,
+          }));
+
+          const { error: recError } = await this.supabase
+            .from('recommendations')
+            .insert(insertPayload);
+
+          if (recError) {
+            console.warn('Failed to save regenerated recommendations:', recError.message);
+          }
+        }
+      } catch (genErr) {
+        console.warn('Failed to regenerate recommendations:', (genErr as Error).message);
+      }
+    }
+
     return { success: true };
   }
 }
