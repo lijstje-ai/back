@@ -54,7 +54,7 @@ export class WishlistController {
     return this.wishlistService.removeWishListItem(wishlistId, itemId);
   }
 
-  // Обновление основных данных wishlist
+  // Update basic wishlist info
   @Patch(':id/info')
   updateInfo(
     @Param('id') id: string,

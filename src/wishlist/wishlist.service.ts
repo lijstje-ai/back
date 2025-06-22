@@ -238,7 +238,7 @@ export class WishlistService {
   }
 
   /**
-   * Обновление основных данных wishlist (название, возраст, interests и т.д.)
+   * Build payload only from provided fields to avoid overwriting undefined -> null
    */
   async updateInfo(id: string, dto: Partial<{
     name: string;
@@ -250,7 +250,7 @@ export class WishlistService {
   }>): Promise<{ success: true }> {
     if (!id) throw new Error('Wishlist ID is required');
 
-    // Формируем payload только из переданных полей, чтобы не затирать undefined -> null
+    // Build payload only from provided fields to avoid overwriting undefined -> null
     const updatePayload: Record<string, unknown> = {};
     if (dto.name !== undefined) updatePayload.name = dto.name;
     if (dto.age !== undefined) updatePayload.age = dto.age;
