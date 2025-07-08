@@ -1,16 +1,16 @@
-import { Controller, Post, Body } from '@nestjs/common';
-import { EmailService } from './email.service';
+import { Controller, Post, Body } from "@nestjs/common";
+import { EmailService } from "./email.service";
 
-@Controller('email')
+@Controller("email")
 export class EmailController {
   constructor(private readonly emailService: EmailService) {}
 
-  @Post('send')
+  @Post("send")
   async sendEditLink(
-    @Body('to') to: string,
-    @Body('shareLink') shareLink: string,
+    @Body("to") to: string,
+    @Body("shareLink") shareLink: string,
   ) {
     await this.emailService.sendEmail(to, shareLink);
-    return { success: true, message: 'Email sent successfully!' };
+    return { success: true, message: "Email sent successfully!" };
   }
 }

@@ -1,18 +1,18 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { CreateWishlistDto } from './dto/create-wishlist.dto';
-import { SupabaseClient } from '@supabase/supabase-js';
-import { OpenAiService } from '../openai/openai.service';
-import { ProductRecommendation } from './types/recomendations';
-import { Wishlist } from './types/wishlist';
+import { Inject, Injectable } from "@nestjs/common";
+import { CreateWishlistDto } from "./dto/create-wishlist.dto";
+import { SupabaseClient } from "@supabase/supabase-js";
+import { OpenAiService } from "../openai/openai.service";
+import { ProductRecommendation } from "./types/recomendations";
+import { Wishlist } from "./types/wishlist";
 import {
   ProductRecommendationUpdatedDto,
   UpdateWishlistDto,
-} from './dto/update-wishlist.dto';
+} from "./dto/update-wishlist.dto";
 
 @Injectable()
 export class WishlistService {
   constructor(
-    @Inject('SUPABASE_CLIENT') private readonly supabase: SupabaseClient,
+    @Inject("SUPABASE_CLIENT") private readonly supabase: SupabaseClient,
     private readonly openAiService: OpenAiService,
   ) {}
 
@@ -25,7 +25,7 @@ export class WishlistService {
     }
 
     const { data, error } = await this.supabase
-      .from('wishlists')
+      .from("wishlists")
       .insert([
         {
           name: dto.name,
@@ -34,7 +34,7 @@ export class WishlistService {
           interests: dto.interests,
           max_price: dto.maxPrice,
           ai_support: dto.aiSupport,
-          bought_by: '',
+          bought_by: "",
           wish_list: [],
         },
       ])
@@ -50,15 +50,15 @@ export class WishlistService {
         image: rec.image,
         link: rec.link,
         price: rec.price,
-        wishlist_id: wishlist.id,
+        wishlist_id: Number(wishlist.id),
       }));
 
       const { error: recError } = await this.supabase
-        .from('recommendations')
+        .from("recommendations")
         .insert(insertPayload);
 
       if (recError) {
-        console.warn('Failed to save recommendations:', recError.message);
+        console.warn("Failed to save recommendations:", recError.message);
       }
     }
 
@@ -70,9 +70,9 @@ export class WishlistService {
     recommendations: ProductRecommendation[];
   }> {
     const response = await this.supabase
-      .from('wishlists')
-      .select('*')
-      .eq('id', id)
+      .from("wishlists")
+      .select("*")
+      .eq("id", id)
       .single();
 
     if (response.error) throw new Error(response.error.message);
@@ -83,12 +83,12 @@ export class WishlistService {
 
     if (wishlist.ai_support) {
       const recRes = await this.supabase
-        .from('recommendations')
-        .select('*')
-        .eq('wishlist_id', wishlist.id);
+        .from("recommendations")
+        .select("*")
+        .eq("wishlist_id", wishlist.id);
 
       if (recRes.error) {
-        console.warn('Failed to load recommendations:', recRes.error.message);
+        console.warn("Failed to load recommendations:", recRes.error.message);
       } else {
         recommendations = recRes.data as ProductRecommendation[];
       }
@@ -101,12 +101,12 @@ export class WishlistService {
   }
 
   async update(id: string, dto: UpdateWishlistDto): Promise<{ success: true }> {
-    if (!id) throw new Error('Wishlist ID is required');
+    if (!id) throw new Error("Wishlist ID is required");
 
     const { data, error: fetchError } = await this.supabase
-      .from('wishlists')
-      .select('wish_list')
-      .eq('id', id)
+      .from("wishlists")
+      .select("wish_list")
+      .eq("id", id)
       .single();
 
     if (fetchError) {
@@ -117,7 +117,7 @@ export class WishlistService {
 
     const newItem = {
       ...dto.wish_item,
-      bought_by: '',
+      bought_by: "",
     };
 
     if (!dto.wish_item.id) {
@@ -127,9 +127,9 @@ export class WishlistService {
     const updatedWishList = [...currentWishList, newItem];
 
     const { error: updateError } = await this.supabase
-      .from('wishlists')
+      .from("wishlists")
       .update({ wish_list: updatedWishList })
-      .eq('id', id);
+      .eq("id", id);
 
     if (updateError) {
       throw new Error(`Failed to update wish_list: ${updateError.message}`);
@@ -144,13 +144,13 @@ export class WishlistService {
     buyer: string,
   ): Promise<{ success: true }> {
     if (!wishlistId || !itemId || !buyer) {
-      throw new Error('wishlistId, itemId, and buyer are required');
+      throw new Error("wishlistId, itemId, and buyer are required");
     }
 
     const { data, error: fetchError } = await this.supabase
-      .from('wishlists')
-      .select('wish_list')
-      .eq('id', wishlistId)
+      .from("wishlists")
+      .select("wish_list")
+      .eq("id", wishlistId)
       .single();
 
     if (fetchError) {
@@ -171,9 +171,9 @@ export class WishlistService {
     });
 
     const { error: updateError } = await this.supabase
-      .from('wishlists')
+      .from("wishlists")
       .update({ wish_list: updatedWishList })
-      .eq('id', wishlistId);
+      .eq("id", wishlistId);
 
     if (updateError) {
       throw new Error(`Failed to update bought_by: ${updateError.message}`);
@@ -184,18 +184,18 @@ export class WishlistService {
 
   async remove(id: string): Promise<{ success: true }> {
     const { error: recError } = await this.supabase
-      .from('recommendations')
+      .from("recommendations")
       .delete()
-      .eq('wishlist_id', id);
+      .eq("wishlist_id", id);
 
     if (recError) {
       throw new Error(`Failed to delete recommendations: ${recError.message}`);
     }
 
     const { error: wishlistError } = await this.supabase
-      .from('wishlists')
+      .from("wishlists")
       .delete()
-      .eq('id', id);
+      .eq("id", id);
 
     if (wishlistError) {
       throw new Error(`Failed to delete wishlist: ${wishlistError.message}`);
@@ -209,9 +209,9 @@ export class WishlistService {
     itemId: string,
   ): Promise<{ success: true }> {
     const { data, error: fetchError } = await this.supabase
-      .from('wishlists')
-      .select('wish_list')
-      .eq('id', wishlistId)
+      .from("wishlists")
+      .select("wish_list")
+      .eq("id", wishlistId)
       .single();
 
     if (fetchError) {
@@ -226,9 +226,9 @@ export class WishlistService {
     );
 
     const { error: updateError } = await this.supabase
-      .from('wishlists')
+      .from("wishlists")
       .update({ wish_list: updatedWishList })
-      .eq('id', wishlistId);
+      .eq("id", wishlistId);
 
     if (updateError) {
       throw new Error(`Failed to update wishlist: ${updateError.message}`);
@@ -237,18 +237,18 @@ export class WishlistService {
     return { success: true };
   }
 
-  /**
-   * Build payload only from provided fields to avoid overwriting undefined -> null
-   */
-  async updateInfo(id: string, dto: Partial<{
-    name: string;
-    age: number;
-    gender: string;
-    interests: string;
-    maxPrice: number;
-    aiSupport: boolean;
-  }>): Promise<{ success: true }> {
-    if (!id) throw new Error('Wishlist ID is required');
+  async updateInfo(
+    id: string,
+    dto: Partial<{
+      name: string;
+      age: number;
+      gender: string;
+      interests: string;
+      maxPrice: number;
+      aiSupport: boolean;
+    }>,
+  ): Promise<{ success: true }> {
+    if (!id) throw new Error("Wishlist ID is required");
 
     // Build payload only from provided fields to avoid overwriting undefined -> null
     const updatePayload: Record<string, unknown> = {};
@@ -260,21 +260,22 @@ export class WishlistService {
     if (dto.aiSupport !== undefined) updatePayload.ai_support = dto.aiSupport;
 
     const { error } = await this.supabase
-      .from('wishlists')
+      .from("wishlists")
       .update(updatePayload)
-      .eq('id', id);
+      .eq("id", id);
 
-    if (error) throw new Error(`Failed to update wishlist info: ${error.message}`);
+    if (error)
+      throw new Error(`Failed to update wishlist info: ${error.message}`);
 
     // Refresh recommendations if AI support is enabled
-    const { data: updatedWishlistData, error: updatedWishlistError } = await this.supabase
-      .from('wishlists')
-      .select('*')
-      .eq('id', id)
-      .single();
+    const { data: updatedWishlistData, error: updatedWishlistError } =
+      await this.supabase.from("wishlists").select("*").eq("id", id).single();
 
     if (updatedWishlistError) {
-      console.warn('Failed to fetch updated wishlist:', updatedWishlistError.message);
+      console.warn(
+        "Failed to fetch updated wishlist:",
+        updatedWishlistError.message,
+      );
       return { success: true };
     }
 
@@ -282,20 +283,21 @@ export class WishlistService {
 
     if (updatedWishlist.ai_support) {
       try {
-        const recommendations = await this.openAiService.generateProductRecommendations({
-          name: updatedWishlist.name,
-          age: updatedWishlist.age,
-          gender: updatedWishlist.gender,
-          interests: updatedWishlist.interests,
-          maxPrice: updatedWishlist.max_price,
-          aiSupport: updatedWishlist.ai_support,
-        });
+        const recommendations =
+          await this.openAiService.generateProductRecommendations({
+            name: updatedWishlist.name,
+            age: updatedWishlist.age,
+            gender: updatedWishlist.gender,
+            interests: updatedWishlist.interests,
+            maxPrice: updatedWishlist.max_price,
+            aiSupport: updatedWishlist.ai_support,
+          });
 
         // Delete old recommendations
         await this.supabase
-          .from('recommendations')
+          .from("recommendations")
           .delete()
-          .eq('wishlist_id', id);
+          .eq("wishlist_id", id);
 
         if (recommendations.length > 0) {
           const insertPayload = recommendations.map((rec) => ({
@@ -307,15 +309,21 @@ export class WishlistService {
           }));
 
           const { error: recError } = await this.supabase
-            .from('recommendations')
+            .from("recommendations")
             .insert(insertPayload);
 
           if (recError) {
-            console.warn('Failed to save regenerated recommendations:', recError.message);
+            console.warn(
+              "Failed to save regenerated recommendations 1:",
+              recError.message,
+            );
           }
         }
       } catch (genErr) {
-        console.warn('Failed to regenerate recommendations:', (genErr as Error).message);
+        console.warn(
+          "Failed to regenerate recommendations 2:",
+          (genErr as Error).message,
+        );
       }
     }
 

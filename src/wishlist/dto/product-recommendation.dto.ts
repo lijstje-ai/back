@@ -1,11 +1,11 @@
-import { Type } from 'class-transformer';
+import { Type } from "class-transformer";
 import {
   IsArray,
   IsOptional,
   IsString,
   ValidateNested,
   IsNumber,
-} from 'class-validator';
+} from "class-validator";
 
 export class ProductRecommendationDto {
   @IsString()

@@ -1,4 +1,4 @@
-import { ProductRecommendation } from './recomendations';
+import { ProductRecommendation } from "./recomendations";
 
 export interface Wishlist {
   id: string;

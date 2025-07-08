@@ -5,7 +5,7 @@ import {
   IsOptional,
   Min,
   Max,
-} from 'class-validator';
+} from "class-validator";
 
 export class CreateWishlistDto {
   @IsString()

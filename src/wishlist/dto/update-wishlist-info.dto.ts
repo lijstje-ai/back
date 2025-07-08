@@ -1,4 +1,11 @@
-import { IsString, IsNumber, IsBoolean, IsOptional, Min, Max } from 'class-validator';
+import {
+  IsString,
+  IsNumber,
+  IsBoolean,
+  IsOptional,
+  Min,
+  Max,
+} from "class-validator";
 
 export class UpdateWishlistInfoDto {
   @IsOptional()
@@ -26,4 +33,4 @@ export class UpdateWishlistInfoDto {
   @IsOptional()
   @IsBoolean()
   aiSupport?: boolean;
-} 
+}

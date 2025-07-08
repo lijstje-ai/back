@@ -6,19 +6,19 @@ import {
   Param,
   Patch,
   Delete,
-} from '@nestjs/common';
-import { WishlistService } from './wishlist.service';
-import { CreateWishlistDto } from './dto/create-wishlist.dto';
-import { UpdateWishlistDto } from './dto/update-wishlist.dto';
-import { UpdateBoughtByDto } from './dto/update-bought-by.dto';
-import { UpdateWishlistInfoDto } from './dto/update-wishlist-info.dto';
+} from "@nestjs/common";
+import { WishlistService } from "./wishlist.service";
+import { CreateWishlistDto } from "./dto/create-wishlist.dto";
+import { UpdateWishlistDto } from "./dto/update-wishlist.dto";
+import { UpdateBoughtByDto } from "./dto/update-bought-by.dto";
+import { UpdateWishlistInfoDto } from "./dto/update-wishlist-info.dto";
 
-@Controller('wishlist')
+@Controller("wishlist")
 export class WishlistController {
   constructor(private readonly wishlistService: WishlistService) {}
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
+  @Get(":id")
+  findOne(@Param("id") id: string) {
     return this.wishlistService.findOne(id);
   }
 
@@ -27,39 +27,36 @@ export class WishlistController {
     return this.wishlistService.create(dto);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateWishlistDto) {
+  @Patch(":id")
+  update(@Param("id") id: string, @Body() dto: UpdateWishlistDto) {
     return this.wishlistService.update(id, dto);
   }
 
-  @Patch(':wishlistId/items/:itemId/bought-by')
+  @Patch(":wishlistId/items/:itemId/bought-by")
   updateBoughtBy(
-    @Param('wishlistId') wishlistId: string,
-    @Param('itemId') itemId: string,
+    @Param("wishlistId") wishlistId: string,
+    @Param("itemId") itemId: string,
     @Body() dto: UpdateBoughtByDto,
   ) {
     return this.wishlistService.updateBoughtBy(wishlistId, itemId, dto.buyer);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
+  @Delete(":id")
+  remove(@Param("id") id: string) {
     return this.wishlistService.remove(id);
   }
 
-  @Delete(':wishlistId/items/:itemId')
+  @Delete(":wishlistId/items/:itemId")
   removeWishListItem(
-    @Param('wishlistId') wishlistId: string,
-    @Param('itemId') itemId: string,
+    @Param("wishlistId") wishlistId: string,
+    @Param("itemId") itemId: string,
   ) {
     return this.wishlistService.removeWishListItem(wishlistId, itemId);
   }
 
   // Update basic wishlist info
-  @Patch(':id/info')
-  updateInfo(
-    @Param('id') id: string,
-    @Body() dto: UpdateWishlistInfoDto,
-  ) {
+  @Patch(":id/info")
+  updateInfo(@Param("id") id: string, @Body() dto: UpdateWishlistInfoDto) {
     return this.wishlistService.updateInfo(id, dto);
   }
 }

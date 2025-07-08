@@ -1,4 +1,4 @@
-import { CreateWishlistDto } from 'src/wishlist/dto/create-wishlist.dto';
+import { CreateWishlistDto } from "src/wishlist/dto/create-wishlist.dto";
 
 export const prompt = (dto: CreateWishlistDto) => {
   const { age, gender, interests, maxPrice } = dto;
@@ -8,7 +8,7 @@ Given the following person:
 - Age: ${age}
 - Gender: ${gender}
 - Interests: ${interests}
-- Budget: ${maxPrice ?? 'no budget specified'} euros maximum
+- Budget: ${maxPrice ?? "no budget specified"} euros maximum
 
 Your task is to generate a list of 10 gift ideas that are likely available on bol.com, matching their interests and staying within the given budget.
 

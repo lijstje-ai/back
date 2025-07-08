@@ -5,14 +5,14 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
-} from '@nestjs/common';
-import axios from 'axios';
-import { ConfigService } from '@nestjs/config';
-import { WishlistService } from 'src/wishlist/wishlist.service';
+} from "@nestjs/common";
+import axios from "axios";
+import { ConfigService } from "@nestjs/config";
+import { WishlistService } from "src/wishlist/wishlist.service";
 
 @Injectable()
 export class BolService {
-  private BOL_API_URL = '';
+  private BOL_API_URL = "";
 
   private accessToken: string | null = null;
   private tokenExpiresAt: number = 0;
@@ -20,11 +20,11 @@ export class BolService {
   getProductTitleFromUrl(url: string): string | null {
     try {
       const parsed = new URL(url);
-      if (!parsed.hostname.includes('bol.com')) return null;
+      if (!parsed.hostname.includes("bol.com")) return null;
 
-      const segments = parsed.pathname.split('/').filter(Boolean);
+      const segments = parsed.pathname.split("/").filter(Boolean);
       const titleSegment = segments.reverse().find((s) => !/^\d+$/.test(s));
-      return titleSegment?.replace(/-/g, ' ') || null;
+      return titleSegment?.replace(/-/g, " ") || null;
     } catch {
       return null;
     }
@@ -35,10 +35,10 @@ export class BolService {
     @Inject(forwardRef(() => WishlistService))
     private readonly wishlistService: WishlistService,
   ) {
-    const apiUrl = this.configService.get<string>('BOL_API_URL');
+    const apiUrl = this.configService.get<string>("BOL_API_URL");
     if (!apiUrl) {
       throw new InternalServerErrorException(
-        'BOL_API_URL is not defined in environment variables',
+        "BOL_API_URL is not defined in environment variables",
       );
     }
     this.BOL_API_URL = apiUrl;
@@ -51,27 +51,27 @@ export class BolService {
       return this.accessToken;
     }
 
-    const clientId = this.configService.get<string>('BOL_CLIENT_ID');
-    const clientSecret = this.configService.get<string>('BOL_CLIENT_SECRET');
+    const clientId = this.configService.get<string>("BOL_CLIENT_ID");
+    const clientSecret = this.configService.get<string>("BOL_CLIENT_SECRET");
 
     if (!clientId || !clientSecret) {
       throw new InternalServerErrorException(
-        'Missing Bol.com client credentials',
+        "Missing Bol.com client credentials",
       );
     }
 
     const credentials = Buffer.from(`${clientId}:${clientSecret}`).toString(
-      'base64',
+      "base64",
     );
 
     try {
       const response = await axios.post(
-        'https://login.bol.com/token?grant_type=client_credentials',
+        "https://login.bol.com/token?grant_type=client_credentials",
         null,
         {
           headers: {
             Authorization: `Basic ${credentials}`,
-            'Content-Type': 'application/x-www-form-urlencoded',
+            "Content-Type": "application/x-www-form-urlencoded",
           },
         },
       );
@@ -82,7 +82,7 @@ export class BolService {
       };
 
       if (!data.access_token) {
-        throw new InternalServerErrorException('No access token received');
+        throw new InternalServerErrorException("No access token received");
       }
 
       this.accessToken = data.access_token;
@@ -91,14 +91,14 @@ export class BolService {
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         console.error(
-          'Error obtaining access token:',
+          "Error obtaining access token:",
           error.response?.data || error.message,
         );
       } else {
-        console.error('Error obtaining access token:', error);
+        console.error("Error obtaining access token:", error);
       }
       throw new InternalServerErrorException(
-        'Failed to obtain access token from Bol.com',
+        "Failed to obtain access token from Bol.com",
       );
     }
   }
@@ -109,15 +109,15 @@ export class BolService {
     try {
       const response = await axios.get(this.BOL_API_URL, {
         params: {
-          'search-term': query,
-          'country-code': 'NL',
-          'page-size': 10,
-          'include-image': true,
-          'include-offer': true,
+          "search-term": query,
+          "country-code": "NL",
+          "page-size": 10,
+          "include-image": true,
+          "include-offer": true,
         },
         headers: {
-          Accept: 'application/json',
-          'Accept-Language': 'nl',
+          Accept: "application/json",
+          "Accept-Language": "nl",
           Authorization: `Bearer ${token}`,
         },
       });
@@ -146,7 +146,7 @@ export class BolService {
 
       const products = data.results.map((item) => ({
         title: item.title,
-        image: item.image?.url ?? '',
+        image: item.image?.url ?? "",
         link: item.url,
         price: item.offer?.price ?? 0,
       }));
@@ -158,17 +158,17 @@ export class BolService {
         return [];
       }
 
-      console.error('❌ Bol.com API error:', error);
+      console.error("❌ Bol.com API error:", error);
       throw new InternalServerErrorException(
-        'Failed to fetch products from Bol.com',
+        "Failed to fetch products from Bol.com",
       );
     }
   }
 
   async searchMultipleFromGptInput(gptOutput: string, maxPrice?: number) {
     const queries = gptOutput
-      .split(',')
-      .map((q) => q.trim().replace(/^"|"$/g, ''))
+      .split(",")
+      .map((q) => q.trim().replace(/^"|"$/g, ""))
       .filter((q) => q.length > 0);
 
     const results: {
@@ -191,7 +191,7 @@ export class BolService {
         if (filtered.length > 0) {
           results.push(filtered[0]);
         }
-        
+
         // Stop if we already have 10 results
         if (results.length >= 10) {
           break;
@@ -206,11 +206,11 @@ export class BolService {
 
   async getProductByUrl(url: string) {
     const title = this.getProductTitleFromUrl(url);
-    if (!title) throw new BadRequestException('Cannot extract title');
+    if (!title) throw new BadRequestException("Cannot extract title");
 
     const results = await this.searchProducts(title);
     if (!results.length)
-      throw new NotFoundException('No product found by title');
+      throw new NotFoundException("No product found by title");
 
     return results[0];
   }
@@ -219,7 +219,7 @@ export class BolService {
     const product = await this.getProductByUrl(url);
 
     if (!product) {
-      throw new NotFoundException('Product not found');
+      throw new NotFoundException("Product not found");
     }
 
     const result = await this.wishlistService.update(wishlistId, {
