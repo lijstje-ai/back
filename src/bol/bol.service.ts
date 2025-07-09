@@ -24,6 +24,7 @@ export class BolService {
 
       const segments = parsed.pathname.split("/").filter(Boolean);
       const titleSegment = segments.reverse().find((s) => !/^\d+$/.test(s));
+
       return titleSegment?.replace(/-/g, " ") || null;
     } catch {
       return null;
@@ -114,6 +115,7 @@ export class BolService {
           "page-size": 10,
           "include-image": true,
           "include-offer": true,
+          "include-rating": true,
         },
         headers: {
           Accept: "application/json",
@@ -122,11 +124,14 @@ export class BolService {
         },
       });
 
+      // console.log(response.data, "bol search");
+
       type BolProduct = {
         title: string;
         image?: { url: string };
         url: string;
         offer?: { price: number };
+        rating?: number;
       };
 
       type BolApiResponse = {
@@ -149,6 +154,7 @@ export class BolService {
         image: item.image?.url ?? "",
         link: item.url,
         price: item.offer?.price ?? 0,
+        rating: item.rating,
       }));
 
       return products;
