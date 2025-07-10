@@ -24,6 +24,10 @@ export class ProductRecommendationUpdatedDto {
 
   @IsUUID()
   id: string;
+
+  @IsNumber()
+  @IsOptional()
+  rating?: number;
 }
 
 export class UpdateWishlistDto {

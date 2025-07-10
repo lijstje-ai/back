@@ -37,6 +37,7 @@ export class OpenAiService {
       gptSuggestions.join(","),
       dto.maxPrice,
     );
+    
     return bolProducts;
   }
 }

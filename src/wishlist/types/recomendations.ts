@@ -3,4 +3,5 @@ export type ProductRecommendation = {
   image: string;
   link: string;
   price: number;
+  rating: number | undefined;
 };

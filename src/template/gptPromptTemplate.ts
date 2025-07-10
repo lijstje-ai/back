@@ -12,6 +12,11 @@ Given the following person:
 
 Your task is to generate a list of 10 gift ideas that are likely available on bol.com, matching their interests and staying within the given budget.
 
+🎯 All gift ideas must be age-appropriate for a person who is ${age} years old. Avoid suggestions that are clearly too young or too mature for this age. 
+For example, do not suggest toddler toys for a 10-year-old, or adult gadgets for a 5-year-old.
+
+🎯 The ideas should reflect the interests listed, and also be engaging, exciting, or useful for the given age group.
+
 Each idea should be expressed as a **general search phrase** (e.g. "wireless headphones", "lego set", "kitchen gadget") — not a specific product name or brand.
 
 Avoid long or overly specific names like "Sony WH-1000XM5 noise cancelling headphones" or "LEGO 42128 Heavy-duty Tow Truck". Use broader terms that people would type into a search bar.

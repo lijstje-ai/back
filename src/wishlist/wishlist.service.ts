@@ -44,13 +44,14 @@ export class WishlistService {
 
     const wishlist = data[0] as Wishlist;
 
-    if (recommendations.length > 0) {
+    if (recommendations.length > 0 && dto.aiSupport) {
       const insertPayload = recommendations.map((rec) => ({
         title: rec.title,
         image: rec.image,
         link: rec.link,
         price: rec.price,
-        wishlist_id: Number(wishlist.id),
+        wishlist_id: wishlist.id,
+        rating: rec.rating,
       }));
 
       const { error: recError } = await this.supabase

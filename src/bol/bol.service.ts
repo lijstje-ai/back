@@ -182,6 +182,7 @@ export class BolService {
       image: string;
       link: string;
       price: number;
+      rating: number | undefined;
     }[] = [];
 
     for (const query of queries) {
@@ -235,6 +236,7 @@ export class BolService {
         image: product.image,
         link: product.link,
         price: product.price,
+        rating: product.rating,
       },
     });
 
