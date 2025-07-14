@@ -1,4 +1,4 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { CreateWishlistDto } from "./dto/create-wishlist.dto";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { OpenAiService } from "../openai/openai.service";
@@ -326,6 +326,61 @@ export class WishlistService {
           (genErr as Error).message,
         );
       }
+    }
+
+    return { success: true };
+  }
+
+  async updateGeneratedList(id: string) {
+    const { data: wishList } = await this.supabase
+      .from("wishlists")
+      .select("*")
+      .eq("id", id)
+      .single();
+
+    if (!wishList) {
+      throw new NotFoundException("Wishlist no found");
+    }
+
+    const recommendations =
+      await this.openAiService.generateProductRecommendations({
+        name: wishList.name,
+        age: wishList.age,
+        gender: wishList.gender,
+        interests: wishList.interests,
+        maxPrice: wishList.maxPrice,
+        aiSupport: true,
+      });
+
+    const newRecommendations = recommendations
+      .filter((item) => item.rating && item.rating > 0)
+      .map((item) => ({
+        ...item,
+        wishlist_id: id,
+      }))
+      .slice(0, 4);
+
+
+    await this.supabase
+      .from("wishlists")
+      .update({ generate_attempts: wishList.generate_attempts - 1 })
+      .eq("id", id);
+
+    const { error: deleteError } = await this.supabase
+      .from("recommendations")
+      .delete()
+      .eq("wishlist_id", id);
+
+    if (deleteError) {
+      throw new Error("Error: " + deleteError.message);
+    }
+
+    const { error: insertError } = await this.supabase
+      .from("recommendations")
+      .insert(newRecommendations);
+
+    if (insertError) {
+      throw new Error("Error " + insertError.message);
     }
 
     return { success: true };

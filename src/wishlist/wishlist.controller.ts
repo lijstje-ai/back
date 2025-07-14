@@ -59,4 +59,9 @@ export class WishlistController {
   updateInfo(@Param("id") id: string, @Body() dto: UpdateWishlistInfoDto) {
     return this.wishlistService.updateInfo(id, dto);
   }
+
+  @Patch("/update-generated-list/:id")
+  async updateGeneratedList(@Param("id") id: string) {
+    return await this.wishlistService.updateGeneratedList(id);
+  }
 }
