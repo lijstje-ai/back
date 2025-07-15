@@ -20,7 +20,7 @@ export class EmailService {
 
   async sendEmail(to: string, shareLink: string): Promise<void> {
     const mailOptions = {
-      from: "Lijstje.ai@lijstje.ai",
+      from: "backup.ai@lijstje.ai",
       to,
       subject: "Edit verlanglijstje",
       html: `Hallo,<br><br>
