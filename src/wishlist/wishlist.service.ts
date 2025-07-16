@@ -101,7 +101,10 @@ export class WishlistService {
     };
   }
 
-  async update(id: string, dto: UpdateWishlistDto): Promise<{ success: true }> {
+  async update(
+    id: string,
+    dto: UpdateWishlistDto,
+  ): Promise<{ success: boolean }> {
     if (!id) throw new Error("Wishlist ID is required");
 
     const { data, error: fetchError } = await this.supabase
@@ -231,6 +234,11 @@ export class WishlistService {
       .update({ wish_list: updatedWishList })
       .eq("id", wishlistId);
 
+    const { error: deleteError } = await this.supabase
+      .from("recommendations")
+      .delete()
+      .eq("id", itemId);
+
     if (updateError) {
       throw new Error(`Failed to update wishlist: ${updateError.message}`);
     }
@@ -359,7 +367,6 @@ export class WishlistService {
         wishlist_id: id,
       }))
       .slice(0, 4);
-
 
     await this.supabase
       .from("wishlists")
