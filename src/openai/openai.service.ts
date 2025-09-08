@@ -11,7 +11,6 @@ Always follow these rules:
 - Every idea must connect clearly to at least one of the INTERESTS.
 - All suggestions must be within the given BUDGET.
 - Output only 10 general Dutch search terms, comma-separated, on a single line.
-- No brands, no model numbers, no product codes.
 - No explanations, numbering, extra text, or newlines.`;
 
 @Injectable()
