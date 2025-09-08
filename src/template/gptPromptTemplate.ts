@@ -24,5 +24,6 @@ Avoid long or overly specific names like "Sony WH-1000XM5 noise cancelling headp
 Return the list strictly as a **single-line string**, **comma-separated**, for example:
 "wireless headphones, lego set, fitness tracker, photo printer, star wars board game, art supplies, puzzle game, bluetooth speaker, board game, outdoor toy"
 
-Do not include bullet points, numbering, explanations, or extra formatting. Only output the comma-separated list.`;
+Do not include bullet points, numbering, explanations, or extra formatting. Only output the comma-separated list.
+`;
 };
