@@ -8,6 +8,7 @@ async function bootstrap() {
       "http://localhost:3001",
       "http://localhost:3000",
       "https://front-gamma-nine.vercel.app",
+      "https://lijstje.ai/"
     ],
     credentials: true,
   });
