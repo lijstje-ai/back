@@ -8,15 +8,20 @@ import {
   ProductRecommendationUpdatedDto,
   UpdateWishlistDto,
 } from "./dto/update-wishlist.dto";
+import { RecaptchaService } from "src/recaptcha/recaptcha.service";
 
 @Injectable()
 export class WishlistService {
   constructor(
     @Inject("SUPABASE_CLIENT") private readonly supabase: SupabaseClient,
     private readonly openAiService: OpenAiService,
+    private readonly recaptchaService: RecaptchaService,
   ) {}
 
   async create(dto: CreateWishlistDto) {
+    if (dto.recaptchaToken)
+      await this.recaptchaService.validate(dto.recaptchaToken);
+
     let recommendations: ProductRecommendation[] = [];
 
     if (dto.aiSupport) {

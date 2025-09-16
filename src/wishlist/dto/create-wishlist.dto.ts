@@ -28,4 +28,8 @@ export class CreateWishlistDto {
 
   @IsBoolean()
   aiSupport: boolean;
+
+  @IsString()
+  @IsOptional()
+  recaptchaToken?: string;
 }
