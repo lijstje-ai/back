@@ -12,7 +12,10 @@ export class RecaptchaService {
 
     const data = (await res.json()) as { success: boolean; score: number };
 
-    if (!data.success || data.score < 0.5) {
+    // if (!data.success || data.score < 0.5) {
+    //   throw new UnauthorizedException("reCAPTCHA validation failed");
+    // }
+    if (!data.success) {
       throw new UnauthorizedException("reCAPTCHA validation failed");
     }
   }
