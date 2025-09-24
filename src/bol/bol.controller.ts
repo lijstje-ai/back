@@ -9,12 +9,19 @@ export class BolController {
   async search(@Query("q") query: string) {
     return this.bolService.searchProducts(query);
   }
+
   @Post("by-url")
   getByUrl(@Body("url") url: string, @Body("wishlistId") wishlistId: string) {
     return this.bolService.getProductByUrlAndAddToWishlist(url, wishlistId);
   }
+
   @Get("preview-by-url")
   async previewByUrl(@Query("url") url: string) {
     return this.bolService.getProductByUrl(url);
+  }
+
+  @Post("affiliate-link")
+  async getAffiliateLink(@Body("url") url: string) {
+    return this.bolService.getAffiliateLink(url);
   }
 }

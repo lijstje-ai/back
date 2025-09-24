@@ -242,4 +242,16 @@ export class BolService {
 
     return result;
   }
+
+  async getAffiliateLink(productUrl: string) {
+    const partnerId = this.configService.get<string>("BOL_PARTNER_ID");
+
+    if (!partnerId) {
+      throw new InternalServerErrorException("Missing Bol.com partner ID");
+    }
+
+    return `https://partner.bol.com/click/click?p=1&t=url&s=${partnerId}&f=TXL&url=${encodeURIComponent(
+      productUrl,
+    )}`;
+  }
 }
