@@ -19,8 +19,8 @@ export class WishlistService {
   ) {}
 
   async create(dto: CreateWishlistDto) {
-    if (dto.recaptchaToken)
-      await this.recaptchaService.validate(dto.recaptchaToken);
+    // if (dto.recaptchaToken)
+    //   await this.recaptchaService.validate(dto.recaptchaToken);
 
     let recommendations: ProductRecommendation[] = [];
 
