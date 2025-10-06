@@ -54,7 +54,6 @@ export class WishlistController {
     return this.wishlistService.removeWishListItem(wishlistId, itemId);
   }
 
-  // Update basic wishlist info
   @Patch(":id/info")
   updateInfo(@Param("id") id: string, @Body() dto: UpdateWishlistInfoDto) {
     return this.wishlistService.updateInfo(id, dto);
@@ -63,5 +62,10 @@ export class WishlistController {
   @Patch("/update-generated-list/:id")
   async updateGeneratedList(@Param("id") id: string) {
     return await this.wishlistService.updateGeneratedList(id);
+  }
+
+  @Get("/wishlists/count")
+  async getWishlistCount() {
+    return await this.wishlistService.getWishlistsCount();
   }
 }

@@ -397,4 +397,21 @@ export class WishlistService {
 
     return { success: true };
   }
+
+  async getWishlistsCount() {
+    const oneYearAgo = new Date();
+    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+    const isoDate = oneYearAgo.toISOString();
+
+    const { data, error } = await this.supabase
+      .from("wishlists")
+      .select("*")
+      .gte("created_at", isoDate);
+
+    if (error) {
+      throw new Error("Error: " + error.message);
+    }
+
+    return { count: data.length || 0 };
+  }
 }
