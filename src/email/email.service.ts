@@ -27,7 +27,7 @@ export class EmailService {
       await this.resend.emails.send({
         from: "Lijstje.ai <backup@lijstje.ai>",
         to,
-        subject: "Je verlanglijstje is klaar!",
+        subject: "Verlanglijstje aanpassen",
         html,
         replyTo: "lijstje.ai@gmail.com",
       });
