@@ -28,8 +28,6 @@ export class OpenAiService {
     const systemPromptText = getSystemPromptByAttemptsRemaining(attemptsRemaining);
     const userPromptText = userPrompt(dto);
     
-    console.log(`[OpenAI] Using system prompt for ${attemptsRemaining} attempts remaining`);
-    
     const res = await this.openai.chat.completions.create({
       model: "gpt-4",
       messages: [

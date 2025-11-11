@@ -280,7 +280,7 @@ export class WishlistService {
       );
     }
 
-    if (aiSupport) await this.updateGeneratedList(id, false);
+    if (aiSupport) await this.updateGeneratedList(id, true);
 
     return { success: true };
   }
