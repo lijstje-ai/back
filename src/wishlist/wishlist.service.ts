@@ -296,15 +296,20 @@ export class WishlistService {
       throw new NotFoundException("Wishlist no found");
     }
 
+    const attemptsRemaining = wishList.generate_attempts;
+
     const recommendations =
-      await this.openAiService.generateProductRecommendations({
-        name: wishList.name,
-        age: wishList.age,
-        gender: wishList.gender,
-        interests: wishList.interests,
-        maxPrice: wishList.maxPrice,
-        aiSupport: true,
-      });
+      await this.openAiService.generateProductRecommendations(
+        {
+          name: wishList.name,
+          age: wishList.age,
+          gender: wishList.gender,
+          interests: wishList.interests,
+          maxPrice: wishList.maxPrice,
+          aiSupport: true,
+        },
+        attemptsRemaining,
+      );
 
     const newRecommendations = recommendations
       .filter((item) => item.rating && item.rating > 0)
