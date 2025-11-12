@@ -16,6 +16,8 @@ export class BolService {
 
   private accessToken: string | null = null;
   private tokenExpiresAt: number = 0;
+  // configurable key for the Bol.com API price filter parameter
+  private priceParamKey = "12194";
 
   getProductTitleFromUrl(url: string): string | null {
     try {
@@ -36,6 +38,8 @@ export class BolService {
     @Inject(forwardRef(() => WishlistService))
     private readonly wishlistService: WishlistService,
   ) {
+    const priceKey = this.configService.get<string>("BOL_PRICE_PARAM");
+    if (priceKey) this.priceParamKey = priceKey;
     const apiUrl = this.configService.get<string>("BOL_API_URL");
     if (!apiUrl) {
       throw new InternalServerErrorException(
@@ -104,7 +108,7 @@ export class BolService {
     }
   }
 
-  async searchProducts(query: string) {
+  async searchProducts(query: string, maxPrice?: number) {
     const token = await this.getAccessToken();
 
     try {
@@ -113,6 +117,7 @@ export class BolService {
           "search-term": query,
           "country-code": "NL",
           sort: "rating",
+          ...(maxPrice !== undefined ? { [this.priceParamKey]: Math.round(maxPrice) } : {}),
           "page-size": 10,
           "include-image": true,
           "include-offer": true,
@@ -150,7 +155,7 @@ export class BolService {
         return [];
       }
 
-      const products = data.results.map((item) => ({
+        const products = data.results.map((item) => ({
         title: item.title,
         image: item.image?.url ?? "",
         link: item.url,
@@ -190,7 +195,7 @@ export class BolService {
 
     for (const query of queries) {
       try {
-        const products = await this.searchProducts(query);
+        const products = await this.searchProducts(query, maxPrice);
 
         const filtered = products.filter(
           (p) =>
@@ -203,14 +208,6 @@ export class BolService {
         if (candidate) {
           results.push(candidate);
           seenLinks.add(candidate.link);
-        } else {
-          const fallback = products.find(
-            (p) => p.price !== undefined && (maxPrice === undefined || p.price <= maxPrice) && !seenLinks.has(p.link),
-          );
-          if (fallback) {
-            results.push(fallback);
-            seenLinks.add(fallback.link);
-          }
         }
 
         if (results.length >= 20) {
