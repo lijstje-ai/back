@@ -112,6 +112,7 @@ export class BolService {
         params: {
           "search-term": query,
           "country-code": "NL",
+          sort: "rating",
           "page-size": 10,
           "include-image": true,
           "include-offer": true,
@@ -185,6 +186,8 @@ export class BolService {
       rating: number | undefined;
     }[] = [];
 
+    const seenLinks = new Set<string>();
+
     for (const query of queries) {
       try {
         const products = await this.searchProducts(query);
@@ -195,12 +198,22 @@ export class BolService {
             (maxPrice === undefined || p.price <= maxPrice),
         );
 
-        if (filtered.length > 0) {
-          results.push(filtered[0]);
+        const candidate = filtered.find((p) => !seenLinks.has(p.link));
+
+        if (candidate) {
+          results.push(candidate);
+          seenLinks.add(candidate.link);
+        } else {
+          const fallback = products.find(
+            (p) => p.price !== undefined && (maxPrice === undefined || p.price <= maxPrice) && !seenLinks.has(p.link),
+          );
+          if (fallback) {
+            results.push(fallback);
+            seenLinks.add(fallback.link);
+          }
         }
 
-        // Stop if we already have 10 results
-        if (results.length >= 10) {
+        if (results.length >= 20) {
           break;
         }
       } catch (err) {
