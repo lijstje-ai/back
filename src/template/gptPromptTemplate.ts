@@ -61,8 +61,8 @@ For adults (18+), an age suffix is not needed unless it improves search accuracy
 
 Output rules:
 
-- Think carefully step by step before deciding, but only output the final 15 search terms.
-- Output exactly 15 general Dutch search terms.
+- Think carefully step by step before deciding, but only output the final 20 search terms.
+- Output exactly 20 general Dutch search terms.
 - Only include brand names if they are explicitly written in INTERESTS or required by the Brand rule.
 - Never invent or add new brand names.
 - No model numbers or product codes.
@@ -142,7 +142,7 @@ Creative exploration rule:
 Output rules:
 
 - Think carefully step by step, but output only the final result.
-- Output exactly 15 general Dutch search terms, comma-separated, no numbering, no explanations.
+- Output exactly 20 general Dutch search terms, comma-separated, no numbering, no explanations.
 - Only include brand names if they appear in INTERESTS or are required by the Brand rule.
 - No model numbers, product codes, English words, or verbs.
 - Always use nouns, with singular products and plural audiences.
@@ -224,7 +224,7 @@ Variety rule:
 Output rules:
 
 - Think carefully step by step, but output only the final result.
-- Output exactly 15 general Dutch search terms, comma-separated, no numbering, no explanations.
+- Output exactly 20 general Dutch search terms, comma-separated, no numbering, no explanations.
 - Only include brand names if they appear in INTERESTS or are required by the Brand rule.
 - No model numbers, product codes, English words, or verbs.
 - Always use nouns, with singular products and plural audiences.
@@ -304,7 +304,7 @@ Variety rule:
 Output rules:
 
 - Think carefully step by step, but output only the final result.
-- Output exactly 15 general Dutch search terms, comma-separated, no numbering, no explanations.
+- Output exactly 20 general Dutch search terms, comma-separated, no numbering, no explanations.
 - Only include brand names if they appear in INTERESTS or are required by the Brand rule.
 - No model numbers, product codes, English words, or verbs.
 - Always use nouns, with singular products and plural audiences.
@@ -393,7 +393,7 @@ Include different product types that support physical, creative, or social engag
 Output rules:
 
 - Think carefully step by step, but output only the final result.
-- Output exactly 15 general Dutch search terms, comma-separated, no numbering, no explanations.
+- Output exactly 20 general Dutch search terms, comma-separated, no numbering, no explanations.
 - Only include brand names if they appear in INTERESTS or are required by the Brand rule.
 - No model numbers, product codes, English words, or verbs.
 - Always use nouns, with singular products and plural audiences.

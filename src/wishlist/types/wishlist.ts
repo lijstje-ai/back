@@ -10,4 +10,5 @@ export interface Wishlist {
   ai_support: boolean;
   bought_by: string;
   wish_list: ProductRecommendation[];
+  generate_attempts: number;
 }

@@ -66,6 +66,11 @@ export class WishlistService {
       if (recError) {
         console.warn("Failed to save recommendations:", recError.message);
       }
+
+      await this.supabase
+        .from("wishlists")
+        .update({ generate_attempts: wishlist.generate_attempts - 1 })
+        .eq("id", wishlist.id);
     }
 
     return { id: wishlist.id };
