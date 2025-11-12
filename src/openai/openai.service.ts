@@ -43,11 +43,15 @@ export class OpenAiService {
     return content.split(",").map((item) => item.trim());
   }
 
-  async generateProductRecommendations(
+async generateProductRecommendations(
     dto: CreateWishlistDto,
     attemptsRemaining: number = 5,
   ) {
-    const gptSuggestions = await this.generateProductSuggestions(dto, attemptsRemaining);
+    const gptSuggestions = await this.generateProductSuggestions(
+      dto,
+      attemptsRemaining,
+    );
+
     const bolProducts = await this.bolService.searchMultipleFromGptInput(
       gptSuggestions.join(","),
       dto.maxPrice,

@@ -310,7 +310,8 @@ export class WishlistService {
           age: wishList.age,
           gender: wishList.gender,
           interests: wishList.interests,
-          maxPrice: wishList.maxPrice,
+          // TODO: remove any
+          maxPrice: (wishList as any).max_price ?? (wishList as any).maxPrice,
           aiSupport: true,
         },
         attemptsRemaining,
@@ -322,7 +323,7 @@ export class WishlistService {
         ...item,
         wishlist_id: id,
       }))
-      .slice(0, 4);
+      .slice(0, 10);
 
     if (isAttempt) {
       await this.supabase

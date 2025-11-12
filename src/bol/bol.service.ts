@@ -16,7 +16,6 @@ export class BolService {
 
   private accessToken: string | null = null;
   private tokenExpiresAt: number = 0;
-  // configurable key for the Bol.com API price filter parameter
   private priceParamKey = "12194";
 
   getProductTitleFromUrl(url: string): string | null {
@@ -38,8 +37,8 @@ export class BolService {
     @Inject(forwardRef(() => WishlistService))
     private readonly wishlistService: WishlistService,
   ) {
-    const priceKey = this.configService.get<string>("BOL_PRICE_PARAM");
-    if (priceKey) this.priceParamKey = priceKey;
+      const priceKey = this.configService.get<string>("BOL_PRICE_PARAM");
+      if (priceKey) this.priceParamKey = priceKey;
     const apiUrl = this.configService.get<string>("BOL_API_URL");
     if (!apiUrl) {
       throw new InternalServerErrorException(
@@ -108,7 +107,7 @@ export class BolService {
     }
   }
 
-  async searchProducts(query: string, maxPrice?: number) {
+    async searchProducts(query: string, maxPrice?: number) {
     const token = await this.getAccessToken();
 
     try {
@@ -116,9 +115,11 @@ export class BolService {
         params: {
           "search-term": query,
           "country-code": "NL",
-          sort: "rating",
-          ...(maxPrice !== undefined ? { [this.priceParamKey]: Math.round(maxPrice) } : {}),
-          "page-size": 10,
+          sort: "RATING",
+          ...(maxPrice !== undefined
+            ? { "range-refinement": `${this.priceParamKey}:0:${Math.ceil(maxPrice)}` }
+            : {}),
+          "page-size": 15,
           "include-image": true,
           "include-offer": true,
           "include-rating": true,
@@ -195,11 +196,12 @@ export class BolService {
 
     for (const query of queries) {
       try {
-        const products = await this.searchProducts(query, maxPrice);
+      const products = await this.searchProducts(query, maxPrice);
 
         const filtered = products.filter(
           (p) =>
             p.price !== undefined &&
+            p.price > 0 &&
             (maxPrice === undefined || p.price <= maxPrice),
         );
 
