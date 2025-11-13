@@ -115,11 +115,10 @@ export class BolService {
         params: {
           "search-term": query,
           "country-code": "NL",
-          sort: "RATING",
           ...(maxPrice !== undefined
             ? { "range-refinement": `${this.priceParamKey}:0:${Math.ceil(maxPrice)}` }
             : {}),
-          "page-size": 15,
+          "page-size": 10,
           "include-image": true,
           "include-offer": true,
           "include-rating": true,
@@ -130,8 +129,6 @@ export class BolService {
           Authorization: `Bearer ${token}`,
         },
       });
-
-      // console.log(response.data, "bol search");
 
       type BolProduct = {
         title: string;
@@ -196,7 +193,7 @@ export class BolService {
 
     for (const query of queries) {
       try {
-      const products = await this.searchProducts(query, maxPrice);
+        const products = await this.searchProducts(query);
 
         const filtered = products.filter(
           (p) =>
@@ -205,14 +202,27 @@ export class BolService {
             (maxPrice === undefined || p.price <= maxPrice),
         );
 
-        const candidate = filtered.find((p) => !seenLinks.has(p.link));
+        if (filtered.length === 0) {
+          continue;
+        }
+
+        const sorted = filtered.sort((a, b) => {
+          const ratingA = a.rating ?? -1;
+          const ratingB = b.rating ?? -1;
+          return ratingB - ratingA;
+        });
+
+        const candidate = sorted.find((p) => !seenLinks.has(p.link));
 
         if (candidate) {
+          if (candidate.rating === undefined) {
+            candidate.rating = 0;
+          }
           results.push(candidate);
           seenLinks.add(candidate.link);
         }
 
-        if (results.length >= 20) {
+        if (results.length >= 10) {
           break;
         }
       } catch (err) {

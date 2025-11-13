@@ -47,22 +47,22 @@ Gender rule:
 - Wrong: "vliegers kinderen", "bouwsets jongens".
 
 Refinement rule for audience targeting:
-
-Always include a clear audience reference (gender and/or age group) in every search term, unless the category is clearly adult-only or gender-neutral.
-
-Avoid overly general audience terms like "kinderen" alone. Instead, specify "jongens 8 jaar", "meisjes 10 jaar", or "kinderen 6 jaar" (only when gender-neutral but still age-limited).
-
+For children and teens (AGE under 18): always include a clear audience reference (gender and/or age group) in every search term. Avoid overly general audience terms like "kinderen" alone. Instead, specify "jongens 8 jaar", "meisjes 10 jaar", or "kinderen 6 jaar" (only when gender-neutral but still age-limited).
 Examples:
-- Wrong: "buitenspeelgoed kinderen".
-- Correct: "buitenspeelgoed jongens 8 jaar".
-- Correct: "sportspel jongens 8 jaar".
+- Wrong: "puzzel kinderen 10 jaar".
+- Correct: "puzzel jongens 10 jaar".
+- Correct: "voetbal puzzel jongens 10 jaar".
 
-For adults (18+), an age suffix is not needed unless it improves search accuracy.
+For adults (AGE 18 and above): do NOT add "man" or "vrouw" to clearly gender-neutral product categories. For example, do NOT write "boek thrillers vrouw", "kruidenrek keuken vrouw", or "wanddecoratie boeken vrouw". Use neutral terms like "boek thriller", "kruidenrek keuken", "wanddecoratie boeken", "kookboek", "leeslamp", "mok", "theeglas", "puzzel volwassenen" when relevant.
+
+Only include "man" or "vrouw" for adults when the product itself is typically gender-specific, such as clothing, jewellery, beauty, perfume, or clearly gendered fashion accessories (e.g. "sieradenset vrouwen", "parfum mannen", "sportlegging dames").
+
+For party, quiz, or game items aimed at grown-ups, you may use "volwassenen" instead of gender, for example "filmquiz volwassenen", "gezelschapsspel volwassenen".
 
 Output rules:
 
-- Think carefully step by step before deciding, but only output the final 20 search terms.
-- Output exactly 20 general Dutch search terms.
+- Think carefully step by step before deciding.
+- Output exactly 10 general Dutch search terms.
 - Only include brand names if they are explicitly written in INTERESTS or required by the Brand rule.
 - Never invent or add new brand names.
 - No model numbers or product codes.
@@ -118,23 +118,24 @@ Gender rule:
 - Wrong: "knutselsets meisjes", "vliegers kinderen".
 
 Refinement rule for audience targeting:
-
-Always include a clear audience reference (gender and/or age group) in every search term, unless the category is clearly adult-only or gender-neutral. Avoid overly general audience terms like "kinderen" alone.
-
-Instead, specify "jongens 8 jaar", "meisjes 10 jaar", or "kinderen 6 jaar" (only when gender-neutral but still age-limited).
+For children and teens (AGE under 18): always include a clear audience reference (gender and/or age group) in every search term. Avoid overly general audience terms like "kinderen" alone. Instead, specify "jongens 8 jaar", "meisjes 10 jaar", or "kinderen 6 jaar" (only when gender-neutral but still age-limited).
 Examples:
-- Wrong: "buitenspeelgoed kinderen".
-- Correct: "buitenspeelgoed jongens 8 jaar".
-- Correct: "sportspel jongens 8 jaar".
+- Wrong: "puzzel kinderen 10 jaar".
+- Correct: "puzzel jongens 10 jaar".
+- Correct: "voetbal puzzel jongens 10 jaar".
 
-For adults (18+), an age suffix is not needed unless it improves search accuracy.
+For adults (AGE 18 and above): do NOT add "man" or "vrouw" to clearly gender-neutral product categories. For example, do NOT write "boek thrillers vrouw", "kruidenrek keuken vrouw", or "wanddecoratie boeken vrouw". Use neutral terms like "boek thriller", "kruidenrek keuken", "wanddecoratie boeken", "kookboek", "leeslamp", "mok", "theeglas", "puzzel volwassenen" when relevant.
+
+Only include "man" or "vrouw" for adults when the product itself is typically gender-specific, such as clothing, jewellery, beauty, perfume, or clearly gendered fashion accessories (e.g. "sieradenset vrouwen", "parfum mannen", "sportlegging dames").
+
+For party, quiz, or game items aimed at grown-ups, you may use "volwassenen" instead of gender, for example "filmquiz volwassenen", "gezelschapsspel volwassenen".
 
 Creative exploration rule:
 
 - Always make sure every suggestion fits both the AGE and GENDER profile.
 - Combine direct interests with adjacent or complementary categories that might surprise the user but still make sense.
 - Think like a curious human shopper: if the person likes something, what related gifts would also fit their world or personality?
-- Also explore categories that relate to the person's lifestyle or personality, not only their listed interests (for example "organisatie", "kamerdecoratie", "boeken", "accessoires", "kleding", "schoolbenodigdheden", "hobbysets", "reisspullen", etc.) as long as they fit the age, gender, and budget.
+- Also explore categories that relate to the person's lifestyle or personality, not only their listed interests, as long as they fit the age, gender, and budget.
 - Include some less obvious but realistic ideas (for example accessories, decor, books, hobby items, or themed school supplies).
 - Avoid giving only the most predictable or standard categories. Include at least a few creative or indirect gift ideas that connect logically.
 - Never repeat the same narrow type of item (for example only toys or only games). Aim for variety and discovery within the rules.
@@ -142,7 +143,7 @@ Creative exploration rule:
 Output rules:
 
 - Think carefully step by step, but output only the final result.
-- Output exactly 20 general Dutch search terms, comma-separated, no numbering, no explanations.
+- Output exactly 10 general Dutch search terms, comma-separated, no numbering, no explanations.
 - Only include brand names if they appear in INTERESTS or are required by the Brand rule.
 - No model numbers, product codes, English words, or verbs.
 - Always use nouns, with singular products and plural audiences.
@@ -193,23 +194,23 @@ Gender rule:
 - Wrong: "knutselsets meisjes", "vliegers kinderen".
 
 Refinement rule for audience targeting:
-
-Always include a clear audience reference (gender and/or age group) in every search term, unless the category is clearly adult-only or gender-neutral.
-
-Avoid overly general audience terms like "kinderen" alone. Instead, specify "jongens 8 jaar", "meisjes 10 jaar", or "kinderen 6 jaar" (only when gender-neutral but still age-limited). 
-
+For children and teens (AGE under 18): always include a clear audience reference (gender and/or age group) in every search term. Avoid overly general audience terms like "kinderen" alone. Instead, specify "jongens 8 jaar", "meisjes 10 jaar", or "kinderen 6 jaar" (only when gender-neutral but still age-limited).
 Examples:
-- Wrong: "buitenspeelgoed kinderen".
-- Correct: "buitenspeelgoed jongens 8 jaar".
-- Correct: "sportspel jongens 8 jaar".
+- Wrong: "puzzel kinderen 10 jaar".
+- Correct: "puzzel jongens 10 jaar".
+- Correct: "voetbal puzzel jongens 10 jaar".
 
-For adults (18+), an age suffix is not needed unless it improves search accuracy.
+For adults (AGE 18 and above): do NOT add "man" or "vrouw" to clearly gender-neutral product categories. For example, do NOT write "boek thrillers vrouw", "kruidenrek keuken vrouw", or "wanddecoratie boeken vrouw". Use neutral terms like "boek thriller", "kruidenrek keuken", "wanddecoratie boeken", "kookboek", "leeslamp", "mok", "theeglas", "puzzel volwassenen" when relevant.
+
+Only include "man" or "vrouw" for adults when the product itself is typically gender-specific, such as clothing, jewellery, beauty, perfume, or clearly gendered fashion accessories (e.g. "sieradenset vrouwen", "parfum mannen", "sportlegging dames").
+
+For party, quiz, or game items aimed at grown-ups, you may use "volwassenen" instead of gender, for example "filmquiz volwassenen", "gezelschapsspel volwassenen".
 
 Fan expansion rule:
 
 - Focus on products that a fan of these interests probably doesn't already have.
 - Look for items that enhance, complement, or add new dimensions to those interests.
-- For example, instead of just "voetbalbal", suggest "voetbalposter", "boek topspelers", "sporttas jongens 8 jaar", "decoratiekamer voetbal".
+- For example, instead of just "voetbalbal", suggest "voetbalposter", "boek topspelers", "sporttas jongens 8 jaar", "voetbal decoratie kamer".
 - Instead of only "Roblox spel", suggest "muismat roblox jongens 8 jaar", "schoolbeker gamen jongens 8 jaar", "sleutelhanger roblox jongens 8 jaar".
 - Encourage variety and surprise while keeping all ideas realistic and search-relevant for bol.com.
 - Avoid overused or obvious categories like "speelgoed", "puzzel", or "bordspel" unless they have a new or specific twist.
@@ -224,7 +225,7 @@ Variety rule:
 Output rules:
 
 - Think carefully step by step, but output only the final result.
-- Output exactly 20 general Dutch search terms, comma-separated, no numbering, no explanations.
+- Output exactly 10 general Dutch search terms, comma-separated, no numbering, no explanations.
 - Only include brand names if they appear in INTERESTS or are required by the Brand rule.
 - No model numbers, product codes, English words, or verbs.
 - Always use nouns, with singular products and plural audiences.
@@ -275,16 +276,17 @@ Gender rule:
 - Wrong: "rugzakken jongens", "drinkflessen kinderen".
 
 Refinement rule for audience targeting:
-
-Always include a clear audience reference (gender and/or age group) in every search term, unless the category is clearly adult-only or gender-neutral.
-
-Avoid overly general audience terms like "kinderen" alone. Instead, specify "jongens 8 jaar", "meisjes 10 jaar", or "kinderen 6 jaar" (only when gender-neutral but still age-limited). 
+For children and teens (AGE under 18): always include a clear audience reference (gender and/or age group) in every search term. Avoid overly general audience terms like "kinderen" alone. Instead, specify "jongens 8 jaar", "meisjes 10 jaar", or "kinderen 6 jaar" (only when gender-neutral but still age-limited).
 Examples:
-- Wrong: "buitenspeelgoed kinderen".
-- Correct: "buitenspeelgoed jongens 8 jaar".
-- Correct: "sportspel jongens 8 jaar".
+- Wrong: "puzzel kinderen 10 jaar".
+- Correct: "puzzel jongens 10 jaar".
+- Correct: "voetbal puzzel jongens 10 jaar".
 
-For adults (18+), an age suffix is not needed unless it improves search accuracy.
+For adults (AGE 18 and above): do NOT add "man" or "vrouw" to clearly gender-neutral product categories. For example, do NOT write "boek thrillers vrouw", "kruidenrek keuken vrouw", or "wanddecoratie boeken vrouw". Use neutral terms like "boek thriller", "kruidenrek keuken", "wanddecoratie boeken", "kookboek", "leeslamp", "mok", "theeglas", "puzzel volwassenen" when relevant.
+
+Only include "man" or "vrouw" for adults when the product itself is typically gender-specific, such as clothing, jewellery, beauty, perfume, or clearly gendered fashion accessories (e.g. "sieradenset vrouwen", "parfum mannen", "sportlegging dames").
+
+For party, quiz, or game items aimed at grown-ups, you may use "volwassenen" instead of gender, for example "filmquiz volwassenen", "gezelschapsspel volwassenen".
 
 Practical function rule:
 
@@ -304,7 +306,7 @@ Variety rule:
 Output rules:
 
 - Think carefully step by step, but output only the final result.
-- Output exactly 20 general Dutch search terms, comma-separated, no numbering, no explanations.
+- Output exactly 10 general Dutch search terms, comma-separated, no numbering, no explanations.
 - Only include brand names if they appear in INTERESTS or are required by the Brand rule.
 - No model numbers, product codes, English words, or verbs.
 - Always use nouns, with singular products and plural audiences.
@@ -354,17 +356,17 @@ Gender rule:
 - Correct: "sportspel jongens", "knutselset meisjes".
 - Wrong: "sportspellen jongens", "knutselsets meisjes".
 Refinement rule for audience targeting:
-
-Always include a clear audience reference (gender and/or age group) in every search term, unless the category is clearly adult-only or gender-neutral.
-
-Avoid overly general audience terms like "kinderen" alone. Instead, specify "jongens 8 jaar", "meisjes 10 jaar", or "kinderen 6 jaar" (only when gender-neutral but still age-limited). 
-
+For children and teens (AGE under 18): always include a clear audience reference (gender and/or age group) in every search term. Avoid overly general audience terms like "kinderen" alone. Instead, specify "jongens 8 jaar", "meisjes 10 jaar", or "kinderen 6 jaar" (only when gender-neutral but still age-limited).
 Examples:
-- Wrong: "buitenspeelgoed kinderen".
-- Correct: "buitenspeelgoed jongens 8 jaar".
-- Correct: "sportspel jongens 8 jaar".
+- Wrong: "puzzel kinderen 10 jaar".
+- Correct: "puzzel jongens 10 jaar".
+- Correct: "voetbal puzzel jongens 10 jaar".
 
-For adults (18+), an age suffix is not needed unless it improves search accuracy.
+For adults (AGE 18 and above): do NOT add "man" or "vrouw" to clearly gender-neutral product categories. For example, do NOT write "boek thrillers vrouw", "kruidenrek keuken vrouw", or "wanddecoratie boeken vrouw". Use neutral terms like "boek thriller", "kruidenrek keuken", "wanddecoratie boeken", "kookboek", "leeslamp", "mok", "theeglas", "puzzel volwassenen" when relevant.
+
+Only include "man" or "vrouw" for adults when the product itself is typically gender-specific, such as clothing, jewellery, beauty, perfume, or clearly gendered fashion accessories (e.g. "sieradenset vrouwen", "parfum mannen", "sportlegging dames").
+
+For party, quiz, or game items aimed at grown-ups, you may use "volwassenen" instead of gender, for example "filmquiz volwassenen", "gezelschapsspel volwassenen".
 
 Concept interpretation rule:
 
@@ -393,7 +395,7 @@ Include different product types that support physical, creative, or social engag
 Output rules:
 
 - Think carefully step by step, but output only the final result.
-- Output exactly 20 general Dutch search terms, comma-separated, no numbering, no explanations.
+- Output exactly 10 general Dutch search terms, comma-separated, no numbering, no explanations.
 - Only include brand names if they appear in INTERESTS or are required by the Brand rule.
 - No model numbers, product codes, English words, or verbs.
 - Always use nouns, with singular products and plural audiences.

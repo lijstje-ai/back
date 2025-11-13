@@ -318,12 +318,10 @@ export class WishlistService {
       );
 
     const newRecommendations = recommendations
-      .filter((item) => item.rating && item.rating > 0)
       .map((item) => ({
         ...item,
         wishlist_id: id,
-      }))
-      .slice(0, 10);
+      }));
 
     if (isAttempt) {
       await this.supabase
