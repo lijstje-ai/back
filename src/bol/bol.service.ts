@@ -13,6 +13,7 @@ import { WishlistService } from "src/wishlist/wishlist.service";
 @Injectable()
 export class BolService {
   private BOL_API_URL = "";
+  private BOL_API_BASE_URL = "";
 
   private accessToken: string | null = null;
   private tokenExpiresAt: number = 0;
@@ -32,6 +33,18 @@ export class BolService {
     }
   }
 
+  getProductIdFromUrl(url: string): string | null {
+    try {
+      const parsed = new URL(url);
+      if (!parsed.hostname.includes("bol.com")) return null;
+
+      const match = parsed.pathname.match(/\/(\d{16,})\/$/);
+      return match ? match[1] : null;
+    } catch {
+      return null;
+    }
+  }
+
   constructor(
     private readonly configService: ConfigService,
     @Inject(forwardRef(() => WishlistService))
@@ -46,6 +59,85 @@ export class BolService {
       );
     }
     this.BOL_API_URL = apiUrl;
+
+    const apiBaseUrl = this.configService.get<string>("BOL_API_BASE_URL") || 
+      "https://api.bol.com/marketing/catalog/v1/products";
+    this.BOL_API_BASE_URL = apiBaseUrl;
+  }
+
+  private async getEanFromProductId(bolProductId: string): Promise<string> {
+    const token = await this.getAccessToken();
+
+    try {
+      const response = await axios.get(
+        `${this.BOL_API_BASE_URL}/${bolProductId}/to-ean`,
+        {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      const { ean } = response.data as { ean: string };
+      if (!ean) throw new Error("No EAN in response");
+      return ean;
+    } catch (error: unknown) {
+      throw new InternalServerErrorException(
+        "Failed to convert Product ID to EAN",
+      );
+    }
+  }
+
+  private async getProductByEan(ean: string) {
+    const token = await this.getAccessToken();
+
+    try {
+      const response = await axios.get(
+        `${this.BOL_API_BASE_URL}/${ean}`,
+        {
+          params: {
+            "country-code": "nl",
+            "include-image": true,
+            "include-offer": true,
+            "include-rating": true,
+          },
+          headers: {
+            Accept: "application/json",
+            "Accept-Language": "nl",
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+
+      type BolProduct = {
+        title: string;
+        image?: { url: string };
+        url: string;
+        offer?: { price: number };
+        rating?: number;
+      };
+
+      const item: BolProduct = response.data;
+
+      const product = {
+        title: item.title,
+        image: item.image?.url ?? "",
+        link: item.url,
+        price: item.offer?.price ?? 0,
+        rating: item.rating,
+      };
+
+      return product;
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response?.status === 404) {
+        throw new NotFoundException("Product not found on Bol.com");
+      }
+
+      throw new InternalServerErrorException(
+        "Failed to fetch product from Bol.com",
+      );
+    }
   }
 
   private async getAccessToken(): Promise<string> {
@@ -92,15 +184,7 @@ export class BolService {
       this.accessToken = data.access_token;
       this.tokenExpiresAt = now + (data.expires_in - 10) * 1000;
       return this.accessToken;
-    } catch (error: unknown) {
-      if (axios.isAxiosError(error)) {
-        console.error(
-          "Error obtaining access token:",
-          error.response?.data || error.message,
-        );
-      } else {
-        console.error("Error obtaining access token:", error);
-      }
+      } catch (error: unknown) {
       throw new InternalServerErrorException(
         "Failed to obtain access token from Bol.com",
       );
@@ -149,7 +233,6 @@ export class BolService {
         !Array.isArray(data.results) ||
         data.results.length === 0
       ) {
-        console.warn(`⚠️ No results for query: "${query}"`);
         return [];
       }
 
@@ -164,11 +247,8 @@ export class BolService {
       return products;
     } catch (error: unknown) {
       if (axios.isAxiosError(error) && error.response?.status === 404) {
-        console.warn(`⚠️ Bol.com 404 Not Found for query: "${query}"`);
         return [];
       }
-
-      console.error("❌ Bol.com API error:", error);
       throw new InternalServerErrorException(
         "Failed to fetch products from Bol.com",
       );
@@ -226,7 +306,6 @@ export class BolService {
           break;
         }
       } catch (err) {
-        console.warn(`❌ Bol.com search failed for "${query}"`, err);
       }
     }
 
@@ -234,14 +313,18 @@ export class BolService {
   }
 
   async getProductByUrl(url: string) {
-    const title = this.getProductTitleFromUrl(url);
-    if (!title) throw new BadRequestException("Cannot extract title");
+    const productId = this.getProductIdFromUrl(url);
+    if (!productId) {
+      throw new BadRequestException("Cannot extract product ID from URL");
+    }
 
-    const results = await this.searchProducts(title);
-    if (!results.length)
-      throw new NotFoundException("No product found by title");
-
-    return results[0];
+    try {
+      const ean = await this.getEanFromProductId(productId);
+      const product = await this.getProductByEan(ean);
+      return product;
+    } catch (error) {
+      throw error;
+    }
   }
 
   async getProductByUrlAndAddToWishlist(url: string, wishlistId: string) {
