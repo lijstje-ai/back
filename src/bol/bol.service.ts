@@ -50,8 +50,8 @@ export class BolService {
     @Inject(forwardRef(() => WishlistService))
     private readonly wishlistService: WishlistService,
   ) {
-      const priceKey = this.configService.get<string>("BOL_PRICE_PARAM");
-      if (priceKey) this.priceParamKey = priceKey;
+    const priceKey = this.configService.get<string>("BOL_PRICE_PARAM");
+    if (priceKey) this.priceParamKey = priceKey;
     const apiUrl = this.configService.get<string>("BOL_API_URL");
     if (!apiUrl) {
       throw new InternalServerErrorException(
@@ -60,7 +60,8 @@ export class BolService {
     }
     this.BOL_API_URL = apiUrl;
 
-    const apiBaseUrl = this.configService.get<string>("BOL_API_BASE_URL") || 
+    const apiBaseUrl =
+      this.configService.get<string>("BOL_API_BASE_URL") ||
       "https://api.bol.com/marketing/catalog/v1/products";
     this.BOL_API_BASE_URL = apiBaseUrl;
   }
@@ -93,22 +94,19 @@ export class BolService {
     const token = await this.getAccessToken();
 
     try {
-      const response = await axios.get(
-        `${this.BOL_API_BASE_URL}/${ean}`,
-        {
-          params: {
-            "country-code": "nl",
-            "include-image": true,
-            "include-offer": true,
-            "include-rating": true,
-          },
-          headers: {
-            Accept: "application/json",
-            "Accept-Language": "nl",
-            Authorization: `Bearer ${token}`,
-          },
+      const response = await axios.get(`${this.BOL_API_BASE_URL}/${ean}`, {
+        params: {
+          "country-code": "nl",
+          "include-image": true,
+          "include-offer": true,
+          "include-rating": true,
         },
-      );
+        headers: {
+          Accept: "application/json",
+          "Accept-Language": "nl",
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       type BolProduct = {
         title: string;
@@ -184,14 +182,14 @@ export class BolService {
       this.accessToken = data.access_token;
       this.tokenExpiresAt = now + (data.expires_in - 10) * 1000;
       return this.accessToken;
-      } catch (error: unknown) {
+    } catch (error: unknown) {
       throw new InternalServerErrorException(
         "Failed to obtain access token from Bol.com",
       );
     }
   }
 
-    async searchProducts(query: string, maxPrice?: number) {
+  async searchProducts(query: string, maxPrice?: number) {
     const token = await this.getAccessToken();
 
     try {
@@ -200,7 +198,9 @@ export class BolService {
           "search-term": query,
           "country-code": "NL",
           ...(maxPrice !== undefined
-            ? { "range-refinement": `${this.priceParamKey}:0:${Math.ceil(maxPrice)}` }
+            ? {
+                "range-refinement": `${this.priceParamKey}:0:${Math.ceil(maxPrice)}`,
+              }
             : {}),
           "page-size": 10,
           "include-image": true,
@@ -236,7 +236,7 @@ export class BolService {
         return [];
       }
 
-        const products = data.results.map((item) => ({
+      const products = data.results.map((item) => ({
         title: item.title,
         image: item.image?.url ?? "",
         link: item.url,
@@ -305,8 +305,7 @@ export class BolService {
         if (results.length >= 10) {
           break;
         }
-      } catch (err) {
-      }
+      } catch (err) {}
     }
 
     return results;

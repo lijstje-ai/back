@@ -2,9 +2,9 @@ import { Injectable } from "@nestjs/common";
 import OpenAI from "openai";
 import { ConfigService } from "@nestjs/config";
 import { CreateWishlistDto } from "../wishlist/dto/create-wishlist.dto";
-import { 
-  userPrompt, 
-  getSystemPromptByAttemptsRemaining 
+import {
+  userPrompt,
+  getSystemPromptByAttemptsRemaining,
 } from "../template/gptPromptTemplate";
 import { BolService } from "../bol/bol.service";
 
@@ -25,9 +25,10 @@ export class OpenAiService {
     dto: CreateWishlistDto,
     attemptsRemaining: number = 5,
   ): Promise<string[]> {
-    const systemPromptText = getSystemPromptByAttemptsRemaining(attemptsRemaining);
+    const systemPromptText =
+      getSystemPromptByAttemptsRemaining(attemptsRemaining);
     const userPromptText = userPrompt(dto);
-    
+
     const res = await this.openai.chat.completions.create({
       model: "gpt-4",
       messages: [
@@ -43,7 +44,7 @@ export class OpenAiService {
     return content.split(",").map((item) => item.trim());
   }
 
-async generateProductRecommendations(
+  async generateProductRecommendations(
     dto: CreateWishlistDto,
     attemptsRemaining: number = 5,
   ) {

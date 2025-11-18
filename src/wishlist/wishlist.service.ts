@@ -1,4 +1,9 @@
-import { Inject, Injectable, NotFoundException } from "@nestjs/common";
+import {
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from "@nestjs/common";
 import { CreateWishlistDto } from "./dto/create-wishlist.dto";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { OpenAiService } from "../openai/openai.service";
@@ -303,6 +308,27 @@ export class WishlistService {
 
     const attemptsRemaining = wishList.generate_attempts;
 
+    if (isAttempt && attemptsRemaining <= 0) {
+      const { data: existingRecommendations, error: recFetchError } =
+        await this.supabase
+          .from("recommendations")
+          .select("*")
+          .eq("wishlist_id", id);
+
+      if (recFetchError) {
+        throw new InternalServerErrorException(
+          `Failed to load existing recommendations: ${recFetchError.message}`,
+        );
+      }
+
+      return {
+        success: true,
+        recommendations: existingRecommendations ?? [],
+        reusedPrevious: true,
+        attemptsRemaining,
+      };
+    }
+
     const recommendations =
       await this.openAiService.generateProductRecommendations(
         {
@@ -317,11 +343,10 @@ export class WishlistService {
         attemptsRemaining,
       );
 
-    const newRecommendations = recommendations
-      .map((item) => ({
-        ...item,
-        wishlist_id: id,
-      }));
+    const newRecommendations = recommendations.map((item) => ({
+      ...item,
+      wishlist_id: id,
+    }));
 
     if (isAttempt) {
       await this.supabase
@@ -347,7 +372,12 @@ export class WishlistService {
       throw new Error("Error " + insertError.message);
     }
 
-    return { success: true };
+    return {
+      success: true,
+      recommendations: newRecommendations,
+      reusedPrevious: false,
+      attemptsRemaining: attemptsRemaining - (isAttempt ? 1 : 0),
+    };
   }
 
   async getWishlistsCount() {
