@@ -9,6 +9,7 @@ async function bootstrap() {
       "http://localhost:3000",
       "https://front-gamma-nine.vercel.app",
       "https://lijstje.ai",
+      "https://feest.ai"
     ],
     credentials: true,
   });
